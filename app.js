@@ -1,35 +1,31 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const date = require(__dirname + "/date.js"); // getDate() - formatted date
 
+// Setup and use EJS
 const app = express();
-
-let items = ["Buy Food", "Cook Food", "Eat Food"];
-let workItems = [];
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+// Pre-defined To Do lists
+const items = ["Buy Food", "Cook Food", "Eat Food"];
+const workItems = [];
+
+// ROUTES
+
+// Root
 app.get("/", function(req, res) {
-
-    var today = new Date();
-
-    var options = {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    };
-    
-    var day = today.toLocaleDateString("en-US", options);
-
+    const day = date.getDate();
     res.render("list", {listTitle: day, newItems: items});
 });
 
 app.post("/", function(req, res) {
     console.log(req.body);
 
-    let item = req.body.newItem;
+    const item = req.body.newItem;
 
     // Use the button's name & value attribute to differentiate which list.
     // This is TRICKY, because the same button is used during render of the html
@@ -49,20 +45,23 @@ app.post("/", function(req, res) {
 
 });
 
+// Work list
 app.get("/work", function(req, res) {
     res.render("list", {listTitle: "Work List", newItems: workItems});
 });
 
-app.get("/about", function(req, res) {
-    res.render("about");
-});
-
 app.post("/work", function (req, res) {
-    let item = req.body.newItem;
+    const item = req.body.newItem;
     workItems.push(item);
     res.redirect("/work");
 });
 
+// About page
+app.get("/about", function(req, res) {
+    res.render("about");
+});
+
+// Start listening
 app.listen(3000, function() {
     console.log("Server listening on port 3000");
 });
