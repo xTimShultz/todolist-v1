@@ -7,10 +7,17 @@
     <title>To Do List</title>
 </head>
 <body>
-    <% if (dayOfWeek === "Saturday" || dayOfWeek === "Sunday") { %>
-        <h1 style="color:purple"><%= dayOfWeek%> ToDo List %></h1>
-    <% } else { %>
-        <h1 style="color:blue"><%= dayOfWeek%> ToDo List %></h1>
-    <% } %>
+    <h1> <%= kindOfDay %></h1>
+
+    <ul>
+        <% for (let i = 0; i < newItems.length; i++) { %>
+            <li><%= newItems[i] %></li>
+        <% } %>
+    </ul>
+
+    <form class="" action="/" method="post">
+        <input type="text" name="newItem" placeholder="New ToDo" required autofocus>
+        <button type="submit" name="button">Add</button>
+    </form>
 </body>
 </html>
